@@ -39,6 +39,7 @@ Please do not distribute without my consent.
 */
 
 #include "../MQ2Plugin.h"
+using namespace std;
 #define   PLUGIN_NAME  "MQ2RelayTells"   // Plugin Name
 #define   PLUGIN_DATE       20080924    // Plugin Date
 #define   PLUGIN_VERS         3.1000    // Plugin Version
