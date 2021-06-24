@@ -38,7 +38,8 @@ Please do not distribute without my consent.
 -- Added character-based ini files. Thanks to jamie75 for the request.
 */
 
-#include "../MQ2Plugin.h"
+#include <mq/Plugin.h>
+// FIXME: Don't do this.
 using namespace std;
 #define   PLUGIN_NAME  "MQ2RelayTells"   // Plugin Name
 #define   PLUGIN_DATE       20080924    // Plugin Date
