@@ -39,11 +39,9 @@ Please do not distribute without my consent.
 */
 
 #include <mq/Plugin.h>
-// FIXME: Don't do this.
-using namespace std;
-#define   PLUGIN_NAME  "MQ2RelayTells"   // Plugin Name
-#define   PLUGIN_DATE       20080924    // Plugin Date
-#define   PLUGIN_VERS         3.1000    // Plugin Version
+
+PreSetup("MQ2Relaytells");
+PLUGIN_VERSION(3.1);
 
 char ChatChannel[MAX_STRING];               //Defines where to output the tell
 char ChannelMessage[MAX_STRING];            //Defines what the output message is
@@ -79,10 +77,6 @@ void MailRelay(VOID);
 void AddCustomTell(PSPAWNINFO pChar, PCHAR szLine);
 void RTSetKey(PSPAWNINFO pChar, PCHAR szLine);
 
-PreSetup("MQ2Relaytells");
-PLUGIN_VERSION(PLUGIN_VERS);
-
-
 // Called once, when the plugin is to initialize
 PLUGIN_API VOID InitializePlugin(VOID)
 {
@@ -93,15 +87,15 @@ PLUGIN_API VOID InitializePlugin(VOID)
 	AddCommand("/rtsetkey", RTSetKey);
 
 	DebugSpewAlways("Initializing MQ2Relaytells");
-	WriteChatf("%s::Version [\ag%1.4f\ax] Loaded! Created by Sadge", PLUGIN_NAME, PLUGIN_VERS);
+	WriteChatf("%s::Version [\ag%1.4f\ax] Loaded! Created by Sadge", mqplugin::PluginName, MQ2Version);
 	WriteChatf("\ay====================\ax");
 	WriteChatColor("You can view the current settings by typing /relayhelp", CONCOLOR_GREEN);
 	WriteChatColor("You can view the mail relay settings by typing /relaymailhelp", CONCOLOR_GREEN);
 	WriteChatColor("You can reload the ini file by typing /relayload", CONCOLOR_GREEN);
 	WriteChatf("\ay====================\ax");
-	if (MQ2Globals::gGameState == GAMESTATE_INGAME) {
+	if (GetGameState() == GAMESTATE_INGAME) {
 		if (GetCharInfo()) {
-			sprintf_s(INIFileName, "%s\\MQ2Relaytells_%s_%s.ini", gszINIPath, GetCharInfo()->Name, EQADDR_SERVERNAME);
+			sprintf_s(INIFileName, "%s\\MQ2Relaytells_%s_%s.ini", gPathConfig, GetCharInfo()->Name, EQADDR_SERVERNAME);
 			Load_INI();
 		}
 	}
@@ -130,7 +124,7 @@ void MailRelay(VOID) {
 	EzCommand(mailcommand);
 
 }
-string StringToLower(string strToConvert)
+std::string StringToLower(std::string strToConvert)
 {//change each element of the string to lower case
 	for (unsigned int i = 0; i<strToConvert.length(); i++)
 	{
@@ -140,8 +134,8 @@ string StringToLower(string strToConvert)
 }
 bool FilterCustomTells(PCHAR Line) {   //checks to see if incoming tell contains custom filtered text
 
-	string IncomingTellLine;
-	string CustomTellLine;
+	std::string IncomingTellLine;
+	std::string CustomTellLine;
 	size_t found;
 
 	for (int i = 1; i<(TotalCustomTells + 1); i++) {
@@ -151,7 +145,7 @@ bool FilterCustomTells(PCHAR Line) {   //checks to see if incoming tell contains
 		CustomTellLine = StringToLower(CustomTellLine);
 
 		found = IncomingTellLine.find(CustomTellLine);
-		if (found != string::npos)
+		if (found != std::string::npos)
 			return true;
 	}
 	return false;
@@ -193,7 +187,7 @@ void DoTellRelay(PCHAR Line)
 	strncat_s(ChatSender, Line, i);
 	i = pch - Line + 4;                        //This part looks for the tell message
 	TellLength = strlen(Line) - 1;
-	string str(Line);
+	std::string str(Line);
 	length = str.copy(TellText, TellLength - i + 1, i - 1);
 	TellText[length] = '\0';
 	sprintf_s(IncomingText, "%s [${Time}] %s %s %s", ChatChannel, ChatSender, ChannelMessage, TellText);   //Sets the output for In Game relay
@@ -259,7 +253,7 @@ void DoTellRelay(PCHAR Line)
 				if (strcmp(TraderNameCheck, nullstring) != 0) {   // Trader with name found
 					if (RelayTraderTells) ReportTell(IncomingText);
 				}
-				else ReportTell(IncomingText);      //All other checks passed means it's a standard tell and should be relayed   
+				else ReportTell(IncomingText);      //All other checks passed means it's a standard tell and should be relayed
 			}
 		}
 	}
@@ -354,7 +348,7 @@ PLUGIN_API void SetGameState(DWORD GameState)
 {
 	if (GameState == GAMESTATE_INGAME) {
 		if (GetCharInfo()) {
-			sprintf_s(INIFileName, "%s\\MQ2Relaytells_%s_%s.ini", gszINIPath, GetCharInfo()->Name, EQADDR_SERVERNAME);
+			sprintf_s(INIFileName, "%s\\MQ2Relaytells_%s_%s.ini", gPathConfig, GetCharInfo()->Name, EQADDR_SERVERNAME);
 			Load_INI();
 		}
 	}
@@ -364,7 +358,7 @@ void RelayHelp(PSPAWNINFO pChar, PCHAR szLine) {
 	// This will display the current ini file settings
 
 	WriteChatf("\ay====================\ax");
-	WriteChatf("%s::Version [\ag%1.4f\ax] Loaded!", PLUGIN_NAME, PLUGIN_VERS);
+	WriteChatf("%s::Version [\ag%1.4f\ax] Loaded!", mqplugin::PluginName, MQ2Version);
 	WriteChatf("\ay====================\ax");
 	WriteChatf("\ayCurrent settings: \ag(0=FALSE, 1=TRUE)\ax");
 	WriteChatf("\ay====================\ax");
@@ -387,7 +381,7 @@ void RelayMailHelp(PSPAWNINFO pChar, PCHAR szLine) {
 	// This will display the current ini file settings for Mail Relay
 
 	WriteChatf("\ay====================\ax");
-	WriteChatf("%s::Version [\ag%1.4f\ax] Loaded!", PLUGIN_NAME, PLUGIN_VERS);
+	WriteChatf("%s::Version [\ag%1.4f\ax] Loaded!", mqplugin::PluginName, MQ2Version);
 	WriteChatf("\ay====================\ax");
 	WriteChatf("\ayCurrent settings: \ag(0=FALSE, 1=TRUE)\ax");
 	WriteChatf("\ay====================\ax");
