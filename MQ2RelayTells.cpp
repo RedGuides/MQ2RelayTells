@@ -109,6 +109,7 @@ PLUGIN_API VOID ShutdownPlugin(VOID)
 	RemoveCommand("/relaymailhelp");
 	RemoveCommand("/relayload");
 	RemoveCommand("/relaycustom");
+	RemoveCommand("/rtsetkey");
 }
 
 VOID ReportTell(PCHAR Line)
