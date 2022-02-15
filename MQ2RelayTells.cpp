@@ -183,13 +183,13 @@ void DoTellRelay(PCHAR Line)
 	char * pch;                           //This part gets the name of the tell sender
 	pch = strchr(Line, ',');
 	int i;
-	i = pch - Line - 10;
+	i = (int)(pch - Line - 10);
 	strcpy_s(ChatSender, "");
 	strncat_s(ChatSender, Line, i);
-	i = pch - Line + 4;                        //This part looks for the tell message
-	TellLength = strlen(Line) - 1;
+	i = (int)(pch - Line + 4);                        //This part looks for the tell message
+	TellLength = (int)strlen(Line) - 1;
 	std::string str(Line);
-	length = str.copy(TellText, TellLength - i + 1, i - 1);
+	length = (int)str.copy(TellText, TellLength - i + 1, i - 1);
 	TellText[length] = '\0';
 	sprintf_s(IncomingText, "%s [${Time}] %s %s %s", ChatChannel, ChatSender, ChannelMessage, TellText);   //Sets the output for In Game relay
 	sprintf_s(Body, "[${Time}] %s %s %s", ChatSender, ChannelMessage, TellText);   //Sets the output for Mail relay
