@@ -94,8 +94,8 @@ PLUGIN_API VOID InitializePlugin(VOID)
 	WriteChatColor("You can reload the ini file by typing /relayload", CONCOLOR_GREEN);
 	WriteChatf("\ay====================\ax");
 	if (GetGameState() == GAMESTATE_INGAME) {
-		if (GetCharInfo()) {
-			sprintf_s(INIFileName, "%s\\MQ2Relaytells_%s_%s.ini", gPathConfig, GetCharInfo()->Name, EQADDR_SERVERNAME);
+		if (pLocalPC) {
+			sprintf_s(INIFileName, "%s\\MQ2Relaytells_%s_%s.ini", gPathConfig, pLocalPC->Name, GetServerShortName());
 			Load_INI();
 		}
 	}
@@ -348,8 +348,8 @@ void Reload_INI(PSPAWNINFO pChar, PCHAR szLine) {
 PLUGIN_API void SetGameState(DWORD GameState)
 {
 	if (GameState == GAMESTATE_INGAME) {
-		if (GetCharInfo()) {
-			sprintf_s(INIFileName, "%s\\MQ2Relaytells_%s_%s.ini", gPathConfig, GetCharInfo()->Name, EQADDR_SERVERNAME);
+		if (pLocalPC) {
+			sprintf_s(INIFileName, "%s\\MQ2Relaytells_%s_%s.ini", gPathConfig, pLocalPC->Name, GetServerShortName());
 			Load_INI();
 		}
 	}
