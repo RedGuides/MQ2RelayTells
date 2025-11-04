@@ -259,18 +259,14 @@ void DoTellRelay(PCHAR Line)
 		}
 	}
 }
-bool BoolFromINI(PCHAR Section, PCHAR Key)
+bool BoolFromINI(const char* Section, const char* Key)
 {
-	char szTemp[MAX_STRING];
-	GetPrivateProfileString(Section, Key, "FALSE", szTemp, MAX_STRING, INIFileName);
-	if (!_strnicmp(szTemp, "FALSE", 5)) {
-		WritePrivateProfileString(Section, Key, "FALSE", INIFileName);
-		return false;
-	}
-	WritePrivateProfileString(Section, Key, "TRUE", INIFileName);
-	return true;
+	bool value = GetPrivateProfileBool(Section, Key, false, INIFileName);
+	WritePrivateProfileBool(Section, Key, value, INIFileName);
+	return value;
 }
-void Load_INI(VOID)
+
+void Load_INI()
 {
 	// This will read your .ini file settings or create them if not available (including creating the file).
 
